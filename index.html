@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE VOID - 意味の終焉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            color: white;
+            cursor: none;
+        }
+        .gradient-blur {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(100,100,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            z-index: 0;
+        }
+        .unselectable { user-select: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen overflow-hidden">
+
+    <div id="cursor" class="gradient-blur"></div>
+
+    <main class="z-10 text-center space-y-8 animate-pulse">
+        <h1 class="text-8xl font-black tracking-tighter opacity-20 hover:opacity-100 transition-opacity duration-1000">
+            0.000000
+        </h1>
+        
+        <p class="text-sm tracking-[1em] uppercase font-light text-gray-500">
+            Processing Nothingness
+        </p>
+
+        <div class="w-64 h-1 bg-gray-900 mx-auto overflow-hidden rounded-full">
+            <div id="progress" class="h-full bg-blue-500 w-0 transition-all duration-300"></div>
+        </div>
+
+        <button id="voidButton" class="px-8 py-3 border border-gray-700 rounded-full text-xs tracking-widest hover:bg-white hover:text-black transition-all duration-500 uppercase">
+            Start Synthesis
+        </button>
+    </main>
+
+    <div id="status" class="fixed bottom-10 left-10 text-[10px] text-gray-700 font-mono unselectable">
+        SYSTEM_STATUS: NOMINAL<br>
+        PROCESSED_DATA: 0KB<br>
+        MEANING_FOUND: FALSE
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const h1 = document.querySelector('h1');
+        const progress = document.getElementById('progress');
+        const btn = document.getElementById('voidButton');
+        let val = 0;
+
+        // カーソル追従（UIの美しさ演出）
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX - 200}px, ${e.clientY - 200}px)`;
+        });
+
+        // 意味のない数値カウントアップ
+        setInterval(() => {
+            val += Math.random() * 0.0001;
+            h1.innerText = val.toFixed(6);
+        }, 50);
+
+        // ボタンを押すと「プログレスバーが進むだけ」という絶望
+        let pWidth = 0;
+        btn.addEventListener('click', () => {
+            pWidth = (pWidth + 10) % 110;
+            progress.style.width = `${pWidth}%`;
+            btn.innerText = pWidth > 100 ? "RESETTING VOID" : "Synthesizing...";
+            
+            // ADHD的な「つい押しちゃう」感覚への嫌がらせ
+            setTimeout(() => {
+                if(pWidth >= 100) {
+                    pWidth = 0;
+                    progress.style.width = '0%';
+                }
+                btn.innerText = "Start Synthesis";
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
